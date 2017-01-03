@@ -9,6 +9,8 @@ import org.vaadin.flexcombobox.FlexComboBox;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.client.ComponentConnector;
+import com.vaadin.client.ConnectorMap;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
@@ -43,6 +45,8 @@ public class FlexcomboboxUI extends UI {
 		layout.addComponent(button);
 		
 		FlexComboBox flexCombobox = new FlexComboBox();
+		flexCombobox.addComponent(new Label("Option 1"));
+		flexCombobox.addComponent(new Button("Option 2"));
 		
 		layout.addComponent(flexCombobox);
 		

@@ -5,7 +5,10 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.vaadin.client.ui.AbstractComponentConnector;
+import com.vaadin.client.ui.AbstractComponentContainerConnector;
 import com.vaadin.shared.ui.Connect;
+
+import java.util.List;
 
 import org.vaadin.flexcombobox.FlexComboBox;
 import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxWidget;
@@ -14,13 +17,16 @@ import com.vaadin.client.communication.RpcProxy;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.vaadin.shared.MouseEventDetails;
+import com.vaadin.client.ComponentConnector;
+import com.vaadin.client.ConnectorHierarchyChangeEvent;
+import com.vaadin.client.ConnectorMap;
 import com.vaadin.client.MouseEventDetailsBuilder;
 import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxClientRpc;
 import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxState;
 import com.vaadin.client.communication.StateChangeEvent;
 
 @Connect(FlexComboBox.class)
-public class FlexComboboxConnector extends AbstractComponentConnector {
+public class FlexComboboxConnector extends AbstractComponentContainerConnector {
 	/*
 	FlexComboboxServerRpc rpc = RpcProxy
 			.create(FlexComboboxServerRpc.class, this);
@@ -45,27 +51,32 @@ public class FlexComboboxConnector extends AbstractComponentConnector {
 
 	}
 	*/
+
 	@Override
 	protected Widget createWidget() {
 		return GWT.create(FlexComboboxWidget.class);
 	}
-
+	
 	@Override
 	public FlexComboboxWidget getWidget() {
 		return (FlexComboboxWidget) super.getWidget();
 	}
 
 	@Override
-	public FlexComboboxState getState() {
-		return (FlexComboboxState) super.getState();
+	public void updateCaption(ComponentConnector connector) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void onStateChanged(StateChangeEvent stateChangeEvent) {
-		super.onStateChanged(stateChangeEvent);
-
-		// TODO do something useful
+	public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
+		List<ComponentConnector> children = getChildComponents();
+		FlexComboboxWidget widget = getWidget();
+		widget.clear();
+		
+		for(ComponentConnector component : children) {
+			widget.add(component);
+		}
 	}
-
 }
 

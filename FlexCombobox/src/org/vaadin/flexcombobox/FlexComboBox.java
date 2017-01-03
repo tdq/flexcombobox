@@ -1,5 +1,7 @@
 package org.vaadin.flexcombobox;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxClientRpc;
@@ -14,15 +16,18 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.ComboBox.ItemStyleGenerator;
+import com.vaadin.ui.Component;
 
 import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxState;
 
-public class FlexComboBox/*<T extends FlexComboBox.FlexItem>*/ extends com.vaadin.ui.AbstractComponent 
+public class FlexComboBox/*<T extends FlexComboBox.FlexItem>*/ extends com.vaadin.ui.AbstractComponentContainer
 	implements FieldEvents.BlurNotifier, FieldEvents.FocusNotifier {
 
 	public interface FlexItem {
 		public String getCaption();
 	}
+	
+	private List<Component> components = new ArrayList<>();
 	
 	private String inputPrompt = null;
 
@@ -261,4 +266,41 @@ public class FlexComboBox/*<T extends FlexComboBox.FlexItem>*/ extends com.vaadi
     public boolean isScrollToSelectedItem() {
         return scrollToSelectedItem;
     }
+
+	@Override
+	public void replaceComponent(Component oldComponent, Component newComponent) {
+		int index = components.indexOf(oldComponent);
+        if (index != -1) {
+        	components.remove(index);
+        	components.add(index, newComponent);
+            fireComponentDetachEvent(oldComponent);
+            fireComponentAttachEvent(newComponent);
+            markAsDirty();
+        }
+	}
+
+	@Override
+	public int getComponentCount() {
+		return components.size();
+	}
+
+	@Override
+	public Iterator<Component> iterator() {
+		return components.iterator();
+	}
+	
+	@Override
+    public void addComponent(Component c) {
+        components.add(c);
+        super.addComponent(c);
+        markAsDirty();
+    }
+
+    @Override
+    public void removeComponent(Component c) {
+        components.remove(c);
+        super.removeComponent(c);
+        markAsDirty();
+    }
+
 }
