@@ -1,8 +1,9 @@
 package org.vaadin.flexcombobox.client.flexcombobox;
 
-public class FlexComboboxState extends com.vaadin.shared.AbstractComponentState {
+import com.vaadin.shared.ui.select.AbstractSelectState;
 
-	// TODO example state
-	public String text = "This is FlexCombobox";
-
+public class FlexComboboxState extends AbstractSelectState {
+	{
+        primaryStyleName = "v-filterselect";
+    }
 }

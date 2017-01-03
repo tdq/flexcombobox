@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ui.AbstractComponentConnector;
 import com.vaadin.shared.ui.Connect;
 
-import org.vaadin.flexcombobox.FlexCombobox;
+import org.vaadin.flexcombobox.FlexComboBox;
 import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxWidget;
 import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxServerRpc;
 import com.vaadin.client.communication.RpcProxy;
@@ -19,9 +19,9 @@ import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxClientRpc;
 import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxState;
 import com.vaadin.client.communication.StateChangeEvent;
 
-@Connect(FlexCombobox.class)
+@Connect(FlexComboBox.class)
 public class FlexComboboxConnector extends AbstractComponentConnector {
-
+	/*
 	FlexComboboxServerRpc rpc = RpcProxy
 			.create(FlexComboboxServerRpc.class, this);
 	
@@ -44,7 +44,7 @@ public class FlexComboboxConnector extends AbstractComponentConnector {
 		});
 
 	}
-
+	*/
 	@Override
 	protected Widget createWidget() {
 		return GWT.create(FlexComboboxWidget.class);
@@ -65,8 +65,6 @@ public class FlexComboboxConnector extends AbstractComponentConnector {
 		super.onStateChanged(stateChangeEvent);
 
 		// TODO do something useful
-		final String text = getState().text;
-		getWidget().setText(text);
 	}
 
 }

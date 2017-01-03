@@ -1,21 +1,26 @@
 package com.example.flexcombobox;
 
+import java.util.Arrays;
+
 import javax.servlet.annotation.WebServlet;
 
-import org.vaadin.flexcombobox.FlexCombobox;
+import org.vaadin.flexcombobox.FlexComboBox;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 @Theme("flexcombobox")
+@Widgetset("org.vaadin.flexcombobox.FlexcomboboxWidgetset")
 public class FlexcomboboxUI extends UI {
 
 	@WebServlet(value = "/*", asyncSupported = true)
@@ -37,7 +42,15 @@ public class FlexcomboboxUI extends UI {
 		});
 		layout.addComponent(button);
 		
-		FlexCombobox combobox = new FlexCombobox();
+		FlexComboBox flexCombobox = new FlexComboBox();
+		
+		layout.addComponent(flexCombobox);
+		
+		ComboBox combobox = new ComboBox("Caption", Arrays.asList(new String[] {
+			"Option 1", "Option 2", "Option 3"
+			}));
+		
+		layout.addComponent(combobox);
 	}
 
 }
