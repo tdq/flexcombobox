@@ -174,6 +174,8 @@ public class FlexComboboxWidget extends Composite implements Field, KeyDownHandl
         tb.addClickHandler(this);
 
         popupOpener.addClickHandler(this);
+        
+        enabled = true;
 
         setStyleName(CLASSNAME);
 
@@ -409,30 +411,37 @@ public class FlexComboboxWidget extends Composite implements Field, KeyDownHandl
             return;
         }
         */
-        if (enabled && !readonly) {
+        if (enabled /*&& !readonly*/) {
             // ask suggestionPopup if it was just closed, we are using GWT
             // Popup's auto close feature
             if (!suggestionPopup.isJustClosed()) {
                 // If a focus event is not going to be sent, send the options
                 // request immediately; otherwise queue in the same burst as the
                 // focus event. Fixes #8321.
-                
+                /*
             	boolean immediate = focused
                         || !client.hasEventListeners(this, EventId.FOCUS);
                 filterOptions(-1, "", immediate);
                 
                 popupOpenerClicked = true;
                 lastFilter = "";
+                */
+            	
+            	if (!suggestionPopup.isAttached()) {
+                    suggestionPopup.showSuggestions(currentSuggestions,
+                            currentPage, totalMatches);
+                }
             }
             
             DOM.eventGetCurrentEvent().preventDefault();
             focus();
             tb.selectAll();
         }
-        
+        /*
         if(suggestionPopup.isShowing() == false) {
         	suggestionPopup.showSuggestions(currentSuggestions, currentPage, currentSuggestions.size());
         }
+        */
 	}
 
 	@Override
