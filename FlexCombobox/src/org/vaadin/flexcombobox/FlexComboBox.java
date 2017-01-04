@@ -16,15 +16,19 @@ import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.ComboBox.ItemStyleGenerator;
+import com.vaadin.ui.HasComponents.ComponentAttachEvent;
+import com.vaadin.ui.AbstractSingleComponentContainer;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HasComponents;
 
 import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxState;
 
-public class FlexComboBox/*<T extends FlexComboBox.FlexItem>*/ extends com.vaadin.ui.AbstractComponentContainer
-	implements FieldEvents.BlurNotifier, FieldEvents.FocusNotifier {
+public class FlexComboBox<T extends FlexComboBox.FlexItem> extends com.vaadin.ui.AbstractComponent
+	implements HasComponents, FieldEvents.BlurNotifier, FieldEvents.FocusNotifier {
 
 	public interface FlexItem {
 		public String getCaption();
+		public Component getComponent();
 	}
 	
 	private List<Component> components = new ArrayList<>();
@@ -267,40 +271,54 @@ public class FlexComboBox/*<T extends FlexComboBox.FlexItem>*/ extends com.vaadi
         return scrollToSelectedItem;
     }
 
-	@Override
-	public void replaceComponent(Component oldComponent, Component newComponent) {
-		int index = components.indexOf(oldComponent);
-        if (index != -1) {
-        	components.remove(index);
-        	components.add(index, newComponent);
-            fireComponentDetachEvent(oldComponent);
-            fireComponentAttachEvent(newComponent);
-            markAsDirty();
-        }
-	}
-
-	@Override
-	public int getComponentCount() {
-		return components.size();
-	}
-
-	@Override
+    @Override
 	public Iterator<Component> iterator() {
 		return components.iterator();
 	}
 	
-	@Override
-    public void addComponent(Component c) {
-        components.add(c);
-        super.addComponent(c);
+    public void addItem(T item) {
+		Component c = item.getComponent();
+		
+		if(c == null) {
+			throw new IllegalArgumentException("Component is not set");
+		}
+		
+		// Make sure we're not adding the component inside it's own content
+        if (isOrHasAncestor(c)) {
+            throw new IllegalArgumentException(
+                    "Component cannot be added inside it's own content");
+        }
+        
+		if (c.getParent() != null) {
+            // If the component already has a parent, try to remove it
+            AbstractSingleComponentContainer.removeFromParent(c);
+        }
+		
+		components.add(c);
+        c.setParent(this);
+        fireEvent(new ComponentAttachEvent(this, c));
         markAsDirty();
+        
+        getState().addItem(c, item.getCaption());
+	}
+	
+	/**
+     * Determine whether a <code>content</code> component is equal to, or the
+     * ancestor of this component.
+     * 
+     * @param content
+     *            the potential ancestor element
+     * @return <code>true</code> if the relationship holds
+     */
+    protected boolean isOrHasAncestor(Component content) {
+        if (content instanceof HasComponents) {
+            for (Component parent = this; parent != null; parent = parent
+                    .getParent()) {
+                if (parent.equals(content)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-
-    @Override
-    public void removeComponent(Component c) {
-        components.remove(c);
-        super.removeComponent(c);
-        markAsDirty();
-    }
-
 }

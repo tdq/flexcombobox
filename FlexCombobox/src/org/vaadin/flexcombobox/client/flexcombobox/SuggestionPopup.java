@@ -1,8 +1,6 @@
 package org.vaadin.flexcombobox.client.flexcombobox;
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.gwt.aria.client.Roles;
@@ -13,7 +11,6 @@ import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.layout.client.Layout;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
@@ -27,7 +24,6 @@ import com.vaadin.client.BrowserInfo;
 import com.vaadin.client.ComputedStyle;
 import com.vaadin.client.UIDL;
 import com.vaadin.client.WidgetUtil;
-import com.vaadin.client.ui.VFilterSelect;
 import com.vaadin.client.ui.VOverlay;
 import com.vaadin.client.ui.menubar.MenuItem;
 import com.vaadin.shared.AbstractComponentState;

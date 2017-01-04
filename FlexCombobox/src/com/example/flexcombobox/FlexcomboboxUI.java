@@ -5,6 +5,7 @@ import java.util.Arrays;
 import javax.servlet.annotation.WebServlet;
 
 import org.vaadin.flexcombobox.FlexComboBox;
+import org.vaadin.flexcombobox.LabelItem;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -44,9 +45,9 @@ public class FlexcomboboxUI extends UI {
 		});
 		layout.addComponent(button);
 		
-		FlexComboBox flexCombobox = new FlexComboBox();
-		flexCombobox.addComponent(new Label("Option 1"));
-		flexCombobox.addComponent(new Button("Option 2"));
+		FlexComboBox<LabelItem> flexCombobox = new FlexComboBox<>();
+		flexCombobox.addItem(new LabelItem("Option 1"));
+		flexCombobox.addItem(new LabelItem("Option 2"));
 		
 		layout.addComponent(flexCombobox);
 		

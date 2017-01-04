@@ -437,11 +437,6 @@ public class FlexComboboxWidget extends Composite implements Field, KeyDownHandl
             focus();
             tb.selectAll();
         }
-        /*
-        if(suggestionPopup.isShowing() == false) {
-        	suggestionPopup.showSuggestions(currentSuggestions, currentPage, currentSuggestions.size());
-        }
-        */
 	}
 
 	@Override
@@ -460,7 +455,7 @@ public class FlexComboboxWidget extends Composite implements Field, KeyDownHandl
 		currentSuggestions.clear();
 	}
 
-	public void add(ComponentConnector component) {
+	public void addComponent(ComponentConnector component, FlexItemProperties properties) {
 		currentSuggestions.add(component.getWidget());
 	}
 

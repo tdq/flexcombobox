@@ -1,29 +1,15 @@
 package org.vaadin.flexcombobox.client.flexcombobox;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Widget;
-
-import com.vaadin.client.ui.AbstractComponentConnector;
-import com.vaadin.client.ui.AbstractComponentContainerConnector;
-import com.vaadin.shared.ui.Connect;
-
 import java.util.List;
 
 import org.vaadin.flexcombobox.FlexComboBox;
-import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxWidget;
-import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxServerRpc;
-import com.vaadin.client.communication.RpcProxy;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.vaadin.shared.MouseEventDetails;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
-import com.vaadin.client.ConnectorMap;
-import com.vaadin.client.MouseEventDetailsBuilder;
-import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxClientRpc;
-import org.vaadin.flexcombobox.client.flexcombobox.FlexComboboxState;
-import com.vaadin.client.communication.StateChangeEvent;
+import com.vaadin.client.ui.AbstractComponentContainerConnector;
+import com.vaadin.shared.ui.Connect;
 
 @Connect(FlexComboBox.class)
 public class FlexComboboxConnector extends AbstractComponentContainerConnector {
@@ -63,6 +49,11 @@ public class FlexComboboxConnector extends AbstractComponentContainerConnector {
 	}
 
 	@Override
+	public FlexComboboxState getState() {
+		return (FlexComboboxState) super.getState();
+	}
+	
+	@Override
 	public void updateCaption(ComponentConnector connector) {
 		// TODO Auto-generated method stub
 		
@@ -70,12 +61,14 @@ public class FlexComboboxConnector extends AbstractComponentContainerConnector {
 
 	@Override
 	public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
-		List<ComponentConnector> children = getChildComponents();
+		List<ComponentConnector> connectors = getChildComponents();
+		
 		FlexComboboxWidget widget = getWidget();
 		widget.clear();
 		
-		for(ComponentConnector component : children) {
-			widget.add(component);
+		for(ComponentConnector connector : connectors) {
+			FlexItemProperties properties = getState().properties.get(connector);
+			widget.addComponent(connector, properties);
 		}
 	}
 }
